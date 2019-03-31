@@ -1,2 +1,5 @@
 bin
 obj
+/packages/OxyPlot.Wpf.1.0.0
+/packages/OxyPlot.Core.1.0.0
+/.vs/WpfApplication1/v15
