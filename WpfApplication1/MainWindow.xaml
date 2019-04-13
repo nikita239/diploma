@@ -44,7 +44,6 @@
             <TabItem Header=" Параметры&#xD;&#xA; нивелирования" Margin="0">
                 <Canvas Margin="0,0,-145,-1" Background="White">
                     <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83" >
-                        <!--<Label Content="Параметры нивелирования Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>-->
                         <Border BorderThickness="1" BorderBrush="#ACACAC" Margin="0,0,-134,0"/>
                         <Grid Margin="0,0,-134,0" HorizontalAlignment="Left" Width="512" >
                             <Grid.RowDefinitions>
@@ -109,24 +108,43 @@
                 <Canvas Margin="0,0,-5,0" Background="White">
                     <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
                         <Label Content="Датчики Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                            <DataGrid Margin="0,107,-1,0 "  Name="dataGrid1" AutoGenerateColumns="False" CanUserAddRows="false" >
+                                <DataGrid.Columns >
+                                    <DataGridTextColumn Binding="{Binding Path=Letter}" Width="*" Header="Буква"/>
+                                    <DataGridTextColumn Binding="{Binding Path=Sum}"  Width="*" Header="Сумма"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
                     </Grid>
                     <Grid HorizontalAlignment="Left" Height="418" VerticalAlignment="Top" Width="382" Background="White">
-                        <DockPanel Margin="10">
-                            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="10,0,155,10" Height="382" Width="197">
-                                <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" RenderTransformOrigin="-2.654,0.85" Content="Открыть файл"/>
-                            </WrapPanel>
-                        </DockPanel>
+                        <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" RenderTransformOrigin="-2.654,0.85" Content="Открыть файл" Margin="38,10,248,376"/>
+                        <Label Content="Имя файла:" Margin="38,60,271,329"/>
+                        <Label Name ="fileNameLabel" Content="{Binding Path=FileName}" Margin="116,60,0,329"/>
                     </Grid>
                 </Canvas>
             </TabItem>
             <TabItem Header="Расчет параметров НП для зоны &#xD;&#xA;сезонного промерзания" HorizontalAlignment="Left" Margin="0" Width="215" Height="44" Padding="0">
-                <Canvas Margin="0,0,368,0">
+                <Canvas Margin="0,0,381,0">
                     <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
-                        <Label Content="Расчет параметров НП для зоны сезонного промерзания Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
+                        <Label Content="Расчет параметров НП для зоны сезонного промерзания" HorizontalAlignment="Right" Height="26" Margin="0,51,39,0" VerticalAlignment="Top" Width="329"/>
                         <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                     </Grid>
-                    <Grid HorizontalAlignment="Left" Height="303" VerticalAlignment="Top" Width="258" Background="White" Canvas.Left="10" Canvas.Top="115"/>
+                    <Grid HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="342" Background="White" Canvas.Left="398" Canvas.Top="-2">
+                        <Line Stroke="Black" StrokeDashArray="2" X2="70" Margin="160,63,140,196"/>
+                        <Line Stroke="Black" StrokeDashArray="2" X2="70" Margin="160,219,140,40"/>
+                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="157" Margin="51,63,0,0" Stroke="Black" VerticalAlignment="Top" Width="109"/>
+                        <Grid Width="10" Margin="192,63,140,84">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="133" />
+                                <RowDefinition Height="10" />
+                            </Grid.RowDefinitions>
+                            <Line Grid.Row="1" Y1="0" Y2="132" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                            <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                            <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
                 </Canvas>
             </TabItem>
             <TabItem Header=" Расчет для&#xA; многолетнемерзлых грунтов" HorizontalAlignment="Left" Margin="0" Width="171" Padding="0">

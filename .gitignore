@@ -3,3 +3,5 @@ obj
 /packages/OxyPlot.Wpf.1.0.0
 /packages/OxyPlot.Core.1.0.0
 /.vs/WpfApplication1/v15
+/packages/Microsoft.Office.Interop.Excel.15.0.4795.1000
+/.vs
