@@ -93,8 +93,8 @@
                             <TextBox HorizontalAlignment="Left" Height="26" Margin="47,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
                             <TextBox HorizontalAlignment="Left" Height="26" Margin="47,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
                             <Label Content="L" HorizontalAlignment="Left" Height="26" Margin="10,51,0,0" VerticalAlignment="Top" Width="21"/>
-                            <Label Content="T" HorizontalAlignment="Left" Height="26" Margin="10,105,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,-0.192"/>
-                            <Label Content="M" HorizontalAlignment="Left" Height="26" Margin="10,159,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,2.192"/>
+                            <Label Content="T" HorizontalAlignment="Left" Height="26" Margin="10,105,0,0" VerticalAlignment="Top" Width="21"/>
+                            <Label Content="M" HorizontalAlignment="Left" Height="26" Margin="10,159,0,0" VerticalAlignment="Top" Width="21"/>
                         </Grid>
                     </Border >
                     <Border Style="{StaticResource RightBorderStyle}">
@@ -132,11 +132,11 @@
                     </Border>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="193" RenderTransformOrigin="3.313,-0.4">
+            <TabItem Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="193">
                 <Canvas  Style="{StaticResource MainCanvasStyle}">
                     <Border Style="{StaticResource LeftBorderStyle}">
                         <Grid Style="{StaticResource LeftGridStyle}">
-                            <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" RenderTransformOrigin="-2.654,0.85" Content="Открыть файл" Margin="38,10,193,398"/>
+                            <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" Content="Открыть файл" Margin="38,10,193,398"/>
                             <ComboBox Name ="combobox22" HorizontalAlignment="Left" Margin="38,63,0,0" VerticalAlignment="Top" Width="151" Height="30" ItemsSource="{Binding Path=Titles }"  
                                    Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}"  IsEditable="True" IsReadOnly="True" Text="Выберите номер" SelectionChanged="ComboBox_SelectionChanged"/>
                         </Grid>
@@ -188,15 +188,19 @@
                     <Border Style="{StaticResource RightBorderStyle}">
                         <Grid Style="{StaticResource RightGridStyle}">
                             <Grid HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="344" Background="White" Canvas.Left="398" Canvas.Top="-2" Margin="80,0,0,0">
+                                <Line Y1="170" Y2="170" X1="0" X2="160" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="85,-26,115,26" Width="144" />
+
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="122,56,0,0" Stroke="Black" VerticalAlignment="Top" Width="18"/>
-                                <Grid Width="10" Margin="217,63,115,84">
+                                <Line Y1="0" Y2="0" X1="0" X2="160" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="84,251,116,-2" Width="144" Height="55" VerticalAlignment="Top" />
+                                <Grid Width="10" Margin="218,63,116,48">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10" />
-                                        <RowDefinition Height="133" />
+                                        <RowDefinition Height="170" />
                                         <RowDefinition Height="10" />
                                     </Grid.RowDefinitions>
-                                    <Line Grid.Row="1" Y1="0" Y2="132" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
-                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,1.083,0,0" Stretch="Fill" />
+                                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="z" VerticalAlignment="Top" Margin="10,56,-5,0"/>
+                                    <Line Grid.Row="1" Y1="0" Y2="170" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Stretch="Fill" />
                                     <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
                                 </Grid>
                                 <Grid Width="10" Margin="192,63,140,160">
@@ -205,8 +209,9 @@
                                         <RowDefinition Height="60" />
                                         <RowDefinition Height="10" />
                                     </Grid.RowDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="f" VerticalAlignment="Top" Margin="-6,18,12,0" Grid.Row="1"/>
                                     <Line Grid.Row="1" Y1="0" Y2="59" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="4.75,0" />
-                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" RenderTransformOrigin="0.433,1.03" Margin="0,1.083,0,0" Stretch="Fill" />
+                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,1.083,0,0" Stretch="Fill" />
                                     <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
                                 </Grid>
                                 <Grid Margin="85,63,115,226">
@@ -247,11 +252,10 @@
                                 </Grid>
                                 <!--<Line Y1="50" Y2="50" X1="166" X2="70" StrokeThickness="1" Stroke="Black" Margin="30,12,-30,-12" />
                             <Line Y1="50" Y2="50" X1="166" X2="70" StrokeThickness="1" Stroke="Black" Margin="-34,18,34,-18" />-->
-                                <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="33" Margin="92,223,0,0" Stroke="Black" VerticalAlignment="Top" Width="82" RenderTransformOrigin="2.333,1.788"/>
+                                <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="28" Margin="92,223,0,0" Stroke="Black" VerticalAlignment="Top" Width="82"/>
                                 <Line Stroke="Black" StrokeDashArray="2" Y2="70" Margin="92,256,236,23"/>
-                                <TextBlock HorizontalAlignment="Left" Margin="180,100,0,0" TextWrapping="Wrap" Text="f" VerticalAlignment="Top" Width="12" Height="16" RenderTransformOrigin="0.125,-0.062"/>
                                 <Line Stroke="Black" StrokeDashArray="2" Y2="70" Margin="173,256,166,22"/>
-                                <Grid Margin="125,242,207,-18" RenderTransformOrigin="0.5,0.5">
+                                <Grid Margin="91,288,241,-64">
                                     <Grid.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>
@@ -266,10 +270,10 @@
                                         <RowDefinition Height="10" />
                                     </Grid.RowDefinitions>
                                     <Line Grid.Row="1" Y1="0" Y2="69" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
-                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" RenderTransformOrigin="0.433,1.03" Margin="0,1.083,0,59.125" Stretch="Fill" Grid.RowSpan="2" />
-                                    <Path Grid.Row="1" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="1,59.542,0,-2.042" RenderTransformOrigin="0.568,0.091" Grid.RowSpan="2" Stretch="Fill"/>
+                                    <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,1.083,0,59.125" Stretch="Fill" Grid.RowSpan="2" />
+                                    <Path Grid.Row="1" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="1,59.542,0,-2.042" Grid.RowSpan="2" Stretch="Fill"/>
                                 </Grid>
-                                <TextBlock HorizontalAlignment="Left" Margin="122,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="16" Height="17" RenderTransformOrigin="0.979,0.588"><Run Text="r"/><Run Text="як" FontSize="8"/></TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="122,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="16" Height="17"><Run Text="r"/><Run Text="як" FontSize="8"/></TextBlock>
                             </Grid>
                         </Grid>
                     </Border>
@@ -292,9 +296,9 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Расчет параметров НП для зоны сезонного промерзания" Grid.ColumnSpan="5"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Text="f" Padding="15,10,0,3"/>
-                                <TextBlock Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Padding="15,10,0,3"><Run Text="P"/><Run FontSize="8" Text="уп"/></TextBlock>
-                                <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap"  Padding="15,10,0,3"><Run Text="P"/><Run FontSize="8" Text="усм"/></TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Text="f" Padding="15,20,0,3"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Padding="15,20,0,3"><Run Text="P"/><Run FontSize="8" Text="уп"/></TextBlock>
+                                <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap"  Padding="15,20,0,3"><Run Text="P"/><Run FontSize="8" Text="усм"/></TextBlock>
                                 <TextBox Grid.Row="1" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
                                 <TextBox Grid.Row="3" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
@@ -308,6 +312,7 @@
                     <Border Style="{StaticResource RightBorderStyle}">
                         <Grid Style="{StaticResource RightGridStyle}">
                             <Grid HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="344" Background="White" Canvas.Left="398" Canvas.Top="-2" Margin="80,0,0,0">
+                                <Line Y1="170" Y2="170" X1="0" X2="160" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="85,-26,115,26" Width="144" />
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="167" Margin="122,56,0,0" Stroke="Black" VerticalAlignment="Top" Width="18"/>
                                 <Grid Width="10" Margin="217,63,115,84">
                                     <Grid.RowDefinitions>
@@ -315,9 +320,10 @@
                                         <RowDefinition Height="133" />
                                         <RowDefinition Height="10" />
                                     </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="z" VerticalAlignment="Top" Margin="10,56,-5,0"/>
                                     <Line Grid.Row="1" Y1="0" Y2="132" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
                                     <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,1.083,0,0" Stretch="Fill" />
-                                    <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
+                                    <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="0,1,-1,-1"/>
                                 </Grid>
                                 <Grid Width="10" Margin="192,63,140,160">
                                     <Grid.RowDefinitions>
@@ -325,6 +331,7 @@
                                         <RowDefinition Height="60" />
                                         <RowDefinition Height="10" />
                                     </Grid.RowDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="f" VerticalAlignment="Top" Margin="-6,18,12,0" Grid.Row="1"/>
                                     <Line Grid.Row="1" Y1="0" Y2="59" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="4.75,0" />
                                     <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" RenderTransformOrigin="0.433,1.03" Margin="0,1.083,0,0" Stretch="Fill" />
                                     <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
@@ -365,6 +372,7 @@
                                     <Line Y1="10" X1="0" X2="15" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom" Height="6" Margin="8.665,0,0,8" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="11" />
                                     <Line Y1="10" X1="0" X2="15" Stroke="Black" StrokeThickness="1" VerticalAlignment="Bottom" Height="6" Margin="8.665,0,0,8" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="12" />
                                 </Grid>
+                                <Line Y1="170" Y2="170" X1="0" X2="160" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="84,52,116,-52" Width="144" />
                                 <!--<Line Y1="50" Y2="50" X1="166" X2="70" StrokeThickness="1" Stroke="Black" Margin="30,12,-30,-12" />
                             <Line Y1="50" Y2="50" X1="166" X2="70" StrokeThickness="1" Stroke="Black" Margin="-34,18,34,-18" />-->
                             </Grid>
