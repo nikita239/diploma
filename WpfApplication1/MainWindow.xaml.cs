@@ -20,17 +20,123 @@ namespace WpfApplication1
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public PlotModel MyModel { get; private set; }
-        public string FileName { get; set; }
-        private bool IsInitialized;
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public class NumbersDTO
+        {
+            public double H { get; set; }
+            public double T1 { get; set; }
+            public double T2 { get; set; }
+        }
+        public MainWindow()
+        {
+            InitializeComponent();
+            cb.SelectedIndex = 0;
+            this.NumbersDTOs = new Dictionary<string, List<NumbersDTO>>();
+            this.DataContext = this;
+            this.plot.Model = this.CreateModel();
+
+            VisibilityCondition = false;
+        }
+
+        public Dictionary<string, List<NumbersDTO>> NumbersDTOs { get; set; }
+
+        public ObservableCollection<string> Titles { get; set; } = new ObservableCollection<string>();
+
+        private PlotModel CreateModel()
+        {
+            Dictionary<double, string> monthValueMap = new Dictionary<double, string>();
+            var months = new List<string> { "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" };
+            var plotModel = new PlotModel();
+            double i = -Math.PI / 2;
+            int month = 0;
+            while (month < 12)
+            {
+                LineAnnotation Line = new LineAnnotation
+                {
+                    Color = OxyColors.Black,
+                    Type = LineAnnotationType.Vertical,
+                    X = i,
+                    ToolTip = i.ToString(),
+                    LineStyle = LineStyle.LongDash
+                };
+                monthValueMap.Add(Math.Round(i, 4), months[month]);
+                i += Math.PI / 6;
+
+                plotModel.Annotations.Add(Line);
+                month++;
+            }
+
+            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = -Math.PI / 2, AbsoluteMaximum = 3 * Math.PI / 2, TicklineColor = OxyColors.White };
+            linearAxis.IsZoomEnabled = false;
+            linearAxis.IsPanEnabled = false;
+            linearAxis.MajorStep = Math.PI / 6;
+            linearAxis.LabelFormatter = (d) =>
+            {
+                return monthValueMap.TryGetValue(Math.Round(d, 4), out string s) ? s : "янв";
+            };
+
+            plotModel.Axes.Add(linearAxis);
+            var function = new FunctionSeries(x => Math.Sin(x), -Math.PI / 2, 3 * Math.PI / 2, 0.1, "");
+            function.Color = OxyColors.Black;
+            plotModel.Series.Add(function);
+
+            return plotModel;
+        }
+
+        private PlotModel CreateModel2()
+        {
+            var plotModel = new PlotModel();
+            var selectedItem = combobox22.SelectedItem.ToString();
+            var data = NumbersDTOs[selectedItem];
+            var function = new LineSeries() { Color = OxyColors.Black };
+
+            foreach (var d in data)
+            {
+                function.Points.Add(new DataPoint(d.H, d.T2 - d.T1));
+            }
+
+            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom };
+            linearAxis.IsZoomEnabled = false;
+            linearAxis.IsPanEnabled = false;
+            linearAxis.MajorStep = 1;
+
+            plotModel.Axes.Add(linearAxis);
+            plotModel.Series.Add(function);
+
+            return plotModel;
+
+        }
+
+        private bool visibilityCondition;
+        public bool VisibilityCondition
+        {
+            get { return visibilityCondition; }
+            set
+            {
+                if (visibilityCondition != value)
+                {
+                    visibilityCondition = value;
+                    OnPropertyChanged("VisibilityCondition");
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private void btnOpenFiles_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = false;
-            openFileDialog.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog.RestoreDirectory = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm",
+                RestoreDirectory = true
+            };
 
             var headers = new List<string>();
 
@@ -47,7 +153,6 @@ namespace WpfApplication1
                             for (var i = 0; i < rowReader.FieldCount; i++)
                                 headers.Add(Convert.ToString(rowReader.GetValue(i)));
                         },
-
                     };
                 }
             };
@@ -65,6 +170,7 @@ namespace WpfApplication1
                 }
 
                 List<NumbersDTO> list = new List<NumbersDTO>();
+
                 string currentNumber = String.Empty;
 
                 for (int i = 1; i < drows.Count; i++)
@@ -72,14 +178,13 @@ namespace WpfApplication1
                     var row = drows[i].ItemArray;
                     if (row.First() != DBNull.Value)
                     {
-
                         if (i != 1)
                         {
                             NumbersDTOs.Add(currentNumber, list);
                             list = new List<NumbersDTO>();
                         }
                         currentNumber = row.First().ToString();
-                        Numbers2.Add(currentNumber);
+                        Titles.Add(currentNumber);
                     }
                     NumbersDTO dto = new NumbersDTO
                     {
@@ -89,135 +194,21 @@ namespace WpfApplication1
                     };
 
                     list.Add(dto);
+
                     if (i == drows.Count - 1)
                     {
-                        NumbersDTOs.Add( currentNumber, list);
+                        NumbersDTOs.Add(currentNumber, list);
                     }
                 }
 
-                Vis =  true;
+                VisibilityCondition = true;
 
                 Settings.Default.Save();
             }
-        }
-        public class NumbersDTO
-        {
-            public double H { get; set; }
-            public double T1 { get; set; }
-            public double T2 { get; set; }
-        }
-        public static bool IsEnabled2 { get; set; } = false;//=  new Prop<bool> { Value = false };
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            cb.SelectedIndex = 0;
-            this.NumbersDTOs = new Dictionary<string, List<NumbersDTO>>();
-            this.DataContext = this;
-            this.Numbers2 = new ObservableCollection<string>() { };
-            this.plot.Model = this.CreateModel();
-
-            Vis = false;
-        }
-
-        public Dictionary<string, List<NumbersDTO>> NumbersDTOs { get; set; }
-
-        public ObservableCollection<string> Numbers2 { get; set; }
-
-        private PlotModel CreateModel()
-        {
-            Dictionary<double, string> dd = new Dictionary<double, string>();
-            var a = new List<string> { "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" };
-            var tmp = new PlotModel();
-            double i = -Math.PI / 2;
-            int y = 0;
-            while (y < 12)
-            {
-                LineAnnotation Line = new LineAnnotation
-                {
-                    Color = OxyColors.Black,
-                    Type = LineAnnotationType.Vertical,
-                    X = i,
-                    ToolTip = i.ToString(),
-                    LineStyle = LineStyle.LongDash
-                };
-                dd.Add(Math.Round(i, 4), a[y]);
-                i += Math.PI / 6;
-
-                tmp.Annotations.Add(Line);
-                y++;
-            }
-
-            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = -Math.PI / 2, AbsoluteMaximum = 3 * Math.PI / 2, TicklineColor = OxyColors.White };
-            linearAxis.IsZoomEnabled = false;
-            linearAxis.IsPanEnabled = false;
-            linearAxis.MajorStep = Math.PI / 6;
-            linearAxis.LabelFormatter = (d) =>
-            {
-                return dd.TryGetValue(Math.Round(d, 4), out string s) ? s : "янв";
-            };
-
-            tmp.Axes.Add(linearAxis);
-
-
-            var function = new FunctionSeries(x => Math.Sin(x), -Math.PI / 2, 3 * Math.PI / 2, 0.1, "");
-            function.Color = OxyColors.Black;
-            tmp.Series.Add(function);
-
-            return tmp;
-
-        }
-
-
-        private PlotModel CreateModel2()
-        {
-
-            var tmp = new PlotModel();
-            var a = combobox22.SelectedItem.ToString();
-            var data = NumbersDTOs[a];
-            var function = new LineSeries();
-            foreach (var d in data)
-            {
-                function.Points.Add(new DataPoint(d.H, d.T2 - d.T1));
-
-            }
-            function.Color = OxyColors.Black;
-            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom };
-            linearAxis.IsZoomEnabled = false;
-            linearAxis.IsPanEnabled = false;
-            linearAxis.MajorStep = 1;
-
-            tmp.Axes.Add(linearAxis);
-            tmp.Series.Add(function);
-
-            return tmp;
-
         }
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             plot2.Model = CreateModel2();
         }
-
-        private bool vis;
-        public bool Vis
-        {
-            get { return vis; }
-            set
-            {
-                if (vis != value)
-                {
-                    vis = value;
-                    OnPropertyChanged("Vis");  // To notify when the property is changed
-                }
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 }
