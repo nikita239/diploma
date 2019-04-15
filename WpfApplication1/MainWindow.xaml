@@ -5,9 +5,10 @@
         Title="MainWindow" ResizeMode="NoResize" Width="931" Height="576">
 
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
-        <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
+        <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
             <Setter Property="Padding" Value="2"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -15,6 +16,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Height" Value="536"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabControl}">
@@ -27,8 +29,9 @@
                                 <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
                                 <RowDefinition x:Name="RowDefinition1" Height="*"/>
                             </Grid.RowDefinitions>
-                            <WrapPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="0,0,0,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" Width="500" HorizontalAlignment="Left"/>
-                            <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                            <WrapPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="20,0,0,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" Width="500" HorizontalAlignment="Left"/>
+                            <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" Grid.Column="0"
+                                    KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" Grid.ColumnSpan="2" Margin="0,0,-151,-26" Height="462" VerticalAlignment="Top" >
                                 <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             </Border>
                         </Grid>
@@ -38,35 +41,54 @@
             </Setter>
         </Style>
 
+        <Style x:Key="MainCanvasStyle" TargetType="{x:Type Canvas}">
+            <Setter Property="Margin" Value="20,0,20,20"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style x:Key="LeftGridStyle" TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="382"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="439"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,0,0,-20"/>
+        </Style>
+        <Style x:Key="RightGridStyle" TargetType="{x:Type Grid}">
+            <Setter Property="Width" Value="497"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="517"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Canvas.Left" Value="382"/>
+            <Setter Property="Canvas.Top" Value="-82"/>
+        </Style>
+
+        <Style x:Key="LeftBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="#ACACAC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="440"/>
+            <Setter Property="Canvas.Left" Value="-2"/>
+            <Setter Property="Canvas.Top" Value="-2"/>
+            <Setter Property="Width" Value="386"/>
+        </Style>
+
+        <Style x:Key="RightBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="#ACACAC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Canvas.Left" Value="389"/>
+            <Setter Property="Canvas.Top" Value="-82"/>
+            <Setter Property="Width" Value="482"/>
+            <Setter Property="Height" Value="520"/>
+        </Style>
     </Window.Resources>
     <Grid>
-        <TabControl Width="915" Style="{StaticResource TabControlStyle1}" HorizontalAlignment="Left" Margin="0,10,0,21" >
+        <TabControl Width="915" Style="{StaticResource TabControlStyle}" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="522" >
             <TabItem Header=" Параметры&#xD;&#xA; нивелирования" Margin="0">
-                <Canvas Margin="0,0,-145,-1" Background="White">
-                    <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83" >
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Margin="0,0,-134,0"/>
-                        <Grid Margin="0,0,-134,0" HorizontalAlignment="Left" Width="512" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="73*"/>
-                                <RowDefinition Height="11*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="299*"/>
-                                <ColumnDefinition Width="62*"/>
-                                <ColumnDefinition Width="17*"/>
-                            </Grid.ColumnDefinitions>
-
-
-                            <oxy:PlotView  Margin="10,27,0,0" Name="plot" Grid.ColumnSpan="3" >
-                                <!--<oxy:PlotView.Series>
-                <oxy:LineSeries ItemsSource="{Binding Points}"/>
-            </oxy:PlotView.Series>-->
-                            </oxy:PlotView>
-                            <Label x:Name="label"  HorizontalAlignment="Left" Height="30" Margin="120,185,0,0" VerticalAlignment="Top" Width="142" RenderTransformOrigin="0.852,-4.1"/>
-                        </Grid>
-                    </Grid>
-                    <Grid HorizontalAlignment="Left" Height="418" VerticalAlignment="Top" Width="382" Background="White" RenderTransformOrigin="0.448,0.758">
-                        <Grid Margin="0,0,0,210">
+                <Canvas  Style="{StaticResource MainCanvasStyle}">
+                    <Border Style="{StaticResource LeftBorderStyle}">
+                        <Grid Style="{StaticResource LeftGridStyle}">
                             <TextBox HorizontalAlignment="Left" Height="26" Margin="47,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
                             <TextBox HorizontalAlignment="Left" Height="26" Margin="47,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
                             <TextBox HorizontalAlignment="Left" Height="26" Margin="47,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
@@ -74,86 +96,120 @@
                             <Label Content="T" HorizontalAlignment="Left" Height="26" Margin="10,105,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,-0.192"/>
                             <Label Content="M" HorizontalAlignment="Left" Height="26" Margin="10,159,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="0.571,2.192"/>
                         </Grid>
-                    </Grid>
+                    </Border >
+                    <Border Style="{StaticResource RightBorderStyle}">
+                        <Grid Style="{StaticResource RightGridStyle}" Height="415" Margin="-2,0,20,0" >
+                        </Grid>
+                    </Border>
                 </Canvas>
             </TabItem>
             <TabItem Header="Интегральная &#xA;температура" Margin="0">
-                <Canvas Margin="0,0,-5,0" Background="White">
-                    <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
-                        <Label Content="Интегральная температура Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                    </Grid>
-                    <Grid HorizontalAlignment="Left" Height="418" VerticalAlignment="Top" Width="372" Background="White" Canvas.Left="5" Canvas.Top="2">
-                        <Grid HorizontalAlignment="Left" Height="183" Margin="10,10,0,0" VerticalAlignment="Top" Width="362">
-                            <Label Content="Параметры породы:" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="138" Grid.Row="1"/>
-                            <ComboBox Name="cb"  HorizontalAlignment="Left" Margin="84,37,0,0" VerticalAlignment="Top" Width="144">
-                                <ComboBoxItem Name="cbi1">Песок</ComboBoxItem>
-                                <ComboBoxItem Name="cbi2">Глина</ComboBoxItem>
-                                <ComboBoxItem Name="cbi3">Суглинок</ComboBoxItem>
-                            </ComboBox>
-                            <TextBox HorizontalAlignment="Left" Height="23" Margin="84,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
-                            <Label Content="α" HorizontalAlignment="Left" Margin="28,77,0,0" VerticalAlignment="Top" Width="22" Height="38" FontSize="20"/>
-                            <Label Content="a" HorizontalAlignment="Left" Margin="28,124,0,0" VerticalAlignment="Top" Width="22" Height="36" FontSize="20"/>
-                            <TextBox HorizontalAlignment="Left" Height="22" Margin="84,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                <Canvas  Style="{StaticResource MainCanvasStyle}">
+                    <Border Style="{StaticResource LeftBorderStyle}">
+                        <Grid Style="{StaticResource LeftGridStyle}">
+                            <Grid HorizontalAlignment="Left" Height="183" Margin="10,10,0,0" VerticalAlignment="Top" Width="362">
+                                <Label Content="Параметры породы:" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="138" Grid.Row="1"/>
+                                <ComboBox Name="cb"  HorizontalAlignment="Left" Margin="84,37,0,0" VerticalAlignment="Top" Width="144">
+                                    <ComboBoxItem Name="cbi1">Песок</ComboBoxItem>
+                                    <ComboBoxItem Name="cbi2">Глина</ComboBoxItem>
+                                    <ComboBoxItem Name="cbi3">Суглинок</ComboBoxItem>
+                                </ComboBox>
+                                <TextBox HorizontalAlignment="Left" Height="23" Margin="84,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                                <Label Content="α" HorizontalAlignment="Left" Margin="28,77,0,0" VerticalAlignment="Top" Width="22" Height="38" FontSize="20"/>
+                                <Label Content="a" HorizontalAlignment="Left" Margin="28,124,0,0" VerticalAlignment="Top" Width="22" Height="36" FontSize="20"/>
+                                <TextBox HorizontalAlignment="Left" Height="22" Margin="84,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Left" Height="52" Margin="23,218,0,0" VerticalAlignment="Top" Width="339">
+                                <Label Content="Амплитуда температуры (Δt):" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="173"/>
+                                <TextBox HorizontalAlignment="Left" Height="23" Margin="189,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+                            </Grid>
                         </Grid>
-                        <Grid HorizontalAlignment="Left" Height="52" Margin="23,218,0,0" VerticalAlignment="Top" Width="339">
-                            <Label Content="Амплитуда температуры (Δt):" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="173"/>
-                            <TextBox HorizontalAlignment="Left" Height="23" Margin="189,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+                    </Border>
+                    <Border Style="{StaticResource RightBorderStyle}">
+                        <Grid Style="{StaticResource RightGridStyle}">
+                            <oxy:PlotView Name="plot" Margin="30,30,30,30"/>
                         </Grid>
-
-                    </Grid>
+                    </Border>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="192" RenderTransformOrigin="3.313,-0.4">
-                <Canvas Margin="0,0,-5,0" Background="White">
-                    <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
-                        <Label Content="Датчики Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                            <DataGrid Margin="0,107,-1,0 "  Name="dataGrid1" AutoGenerateColumns="False" CanUserAddRows="false" >
-                                <DataGrid.Columns >
-                                    <DataGridTextColumn Binding="{Binding Path=Letter}" Width="*" Header="Буква"/>
-                                    <DataGridTextColumn Binding="{Binding Path=Sum}"  Width="*" Header="Сумма"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Border>
-                    </Grid>
-                    <Grid HorizontalAlignment="Left" Height="418" VerticalAlignment="Top" Width="382" Background="White">
-                        <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" RenderTransformOrigin="-2.654,0.85" Content="Открыть файл" Margin="38,10,248,376"/>
-                        <Label Content="Имя файла:" Margin="38,60,271,329"/>
-                        <Label Name ="fileNameLabel" Content="{Binding Path=FileName}" Margin="116,60,0,329"/>
-                    </Grid>
+            <TabItem Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="193" RenderTransformOrigin="3.313,-0.4">
+                <Canvas  Style="{StaticResource MainCanvasStyle}">
+                    <Border Style="{StaticResource LeftBorderStyle}">
+                        <Grid Style="{StaticResource LeftGridStyle}">
+                            <Button x:Name="btnOpenFile" Click="btnOpenFiles_Click" RenderTransformOrigin="-2.654,0.85" Content="Открыть файл" Margin="38,10,248,376"/>
+                            <ComboBox Name ="combobox22" HorizontalAlignment="Left" Margin="38,63,0,0" VerticalAlignment="Top" Width="151" Height="28" ItemsSource="{Binding Path=Numbers2 }"  
+                                   Visibility="{Binding Vis, Converter={StaticResource BooleanToVisibilityConverter}}"  IsEditable="True" IsReadOnly="True" Text="Выберите номер" SelectionChanged="ComboBox_SelectionChanged"/>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource RightBorderStyle}">
+                        <Grid Style="{StaticResource RightGridStyle}">
+                            <oxy:PlotView  Margin="30,30,30,30" Name="plot2"/>
+                        </Grid>
+                    </Border>
                 </Canvas>
             </TabItem>
             <TabItem Header="Расчет параметров НП для зоны &#xD;&#xA;сезонного промерзания" HorizontalAlignment="Left" Margin="0" Width="215" Height="44" Padding="0">
-                <Canvas Margin="0,0,381,0">
-                    <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
-                        <Label Content="Расчет параметров НП для зоны сезонного промерзания" HorizontalAlignment="Right" Height="26" Margin="0,51,39,0" VerticalAlignment="Top" Width="329"/>
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                    </Grid>
-                    <Grid HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="342" Background="White" Canvas.Left="398" Canvas.Top="-2">
-                        <Line Stroke="Black" StrokeDashArray="2" X2="70" Margin="160,63,140,196"/>
-                        <Line Stroke="Black" StrokeDashArray="2" X2="70" Margin="160,219,140,40"/>
-                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="157" Margin="51,63,0,0" Stroke="Black" VerticalAlignment="Top" Width="109"/>
-                        <Grid Width="10" Margin="192,63,140,84">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="133" />
-                                <RowDefinition Height="10" />
-                            </Grid.RowDefinitions>
-                            <Line Grid.Row="1" Y1="0" Y2="132" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
-                            <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" />
-                            <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
+                <Canvas  Style="{StaticResource MainCanvasStyle}">
+                    <Border Style="{StaticResource LeftBorderStyle}">
+                        <Grid Style="{StaticResource LeftGridStyle}">
+                            <Label Content="Расчет параметров НП для зоны сезонного промерзания" HorizontalAlignment="Right" Height="26" Margin="0,51,39,0" VerticalAlignment="Top" Width="329"/>
+                            <TextBox Height="23"  TextWrapping="Wrap" Margin="88,229,205,187"/>
+                            <TextBox Height="23"  TextWrapping="Wrap" Margin="88,185,205,231"/>
+                            <TextBox Height="23" TextWrapping="Wrap"  Margin="38,140,255,276"/>
+                            <TextBox Height="23"  TextWrapping="Wrap" Margin="38,97,255,319"/>
+                            <TextBlock Canvas.Left="18" TextWrapping="Wrap" Text="γ" Canvas.Top="66" Width="14" Height="23" RenderTransformOrigin="1.357,0.536" Margin="19,98,349,318"/>
+                            <TextBlock Canvas.Left="176" TextWrapping="Wrap" Text="Удельный вес породы" Canvas.Top="66" Height="23" Width="156" Margin="184,140,42,276"/>
+                            <TextBlock Canvas.Left="176" TextWrapping="Wrap" Text="Удельная сила морозного пучения" Canvas.Top="104" Height="23" Width="200" Margin="182,186,0,230"/>
+                            <!-- <TextBlock Canvas.Left="176" TextWrapping="Wrap" Text="Расчётное сопротивление грунта" Canvas.Top="142" Height="23" Width="200"/>
+                        <TextBlock TextWrapping="Wrap" Canvas.Top="104" Width="32" Height="23" RenderTransformOrigin="1.357,0.536"><Run Text="    P"/><Run FontSize="8" Text="уп"/></TextBlock>
+                        <TextBlock TextWrapping="Wrap" Canvas.Top="142" Width="32" Height="23" RenderTransformOrigin="1.357,0.536"><Run Text="    R"/><Run FontSize="8" Text="i"/></TextBlock>
+                        <TextBlock Canvas.Left="176" TextWrapping="Wrap" Text="Глубина сезонного промерзания" Canvas.Top="181" Height="23" Width="200" Margin="91,208"/>
+                        <TextBlock TextWrapping="Wrap" Canvas.Top="181" Width="32" Height="23" RenderTransformOrigin="1.357,0.536" Text="    f"/>!-->
                         </Grid>
-                    </Grid>
+                    </Border>
+                    <Border Style="{StaticResource RightBorderStyle}">
+                        <Grid HorizontalAlignment="Left" Height="304" VerticalAlignment="Top" Width="342" Background="White" Canvas.Left="398" Canvas.Top="-2">
+                            <Line Stroke="Black" StrokeDashArray="2" X2="70"/>
+                            <Line Stroke="Black" StrokeDashArray="2" X2="70" Margin="160,219,140,40"/>
+                            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="157" Margin="142,63,0,0" Stroke="Black" VerticalAlignment="Top" Width="18"/>
+                            <Grid Width="10" Margin="217,63,115,84">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="133" />
+                                    <RowDefinition Height="10" />
+                                </Grid.RowDefinitions>
+                                <Line Grid.Row="1" Y1="0" Y2="132" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                                <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                                <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <Grid Width="10" Margin="192,63,140,160">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="60" />
+                                    <RowDefinition Height="10" />
+                                </Grid.RowDefinitions>
+                                <Line Grid.Row="1" Y1="0" Y2="59" X1="0" X2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" Margin="4.75,0" />
+                                <Path Grid.Row="0" Data="M0,10 L5,0 L10,10" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" />
+                                <Path Grid.Row="2" Data="M0,0 L5,10 L10,0Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <Line Y1="50" Y2="50" X1="166" X2="70" StrokeThickness="1" Fill="#FF722F2F" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" HorizontalAlignment="Center" Margin="51,0,125,0" />
+                            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="33" Margin="122,219,0,0" Stroke="Black" VerticalAlignment="Top" Width="65" RenderTransformOrigin="2.333,1.788"/>
+                            <TextBlock HorizontalAlignment="Left" Margin="180,100,0,0" TextWrapping="Wrap" Text="f" VerticalAlignment="Top" Width="12" Height="16" RenderTransformOrigin="0.125,-0.062"/>
+                        </Grid>
+                    </Border>
                 </Canvas>
             </TabItem>
             <TabItem Header=" Расчет для&#xA; многолетнемерзлых грунтов" HorizontalAlignment="Left" Margin="0" Width="171" Padding="0">
-                <Canvas Margin="0,0,-5,0" Background="White">
-                    <Grid HorizontalAlignment="Left" Height="501" VerticalAlignment="Top" Width="378" Background="White" Canvas.Left="382" Canvas.Top="-83">
-                        <Label Content="Расчет для многолетнемерзлых грунтов Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
-                        <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                    </Grid>
-                    <Grid HorizontalAlignment="Left" Height="418" VerticalAlignment="Top" Width="382" Background="White"/>
+                <Canvas  Style="{StaticResource MainCanvasStyle}">
+                    <Border Style="{StaticResource LeftBorderStyle}">
+                        <Grid Style="{StaticResource LeftGridStyle}"/>
+                    </Border>
+                    <Border Style="{StaticResource RightBorderStyle}">
+                        <Grid Style="{StaticResource RightGridStyle}">
+                            <Label Content="Расчет для многолетнемерзлых грунтов Content" HorizontalAlignment="Right" Height="26" Margin="0,51,95,0" VerticalAlignment="Top" Width="273"/>
+                            <!--  <Border BorderThickness="1" BorderBrush="#ACACAC" Grid.ColumnSpan="2" Grid.RowSpan="2"/> -->
+                        </Grid>
+                    </Border>
                 </Canvas>
             </TabItem>
         </TabControl>
