@@ -41,14 +41,14 @@ namespace WpfApplication1
 
         public Dictionary<string, List<NumbersDTO>> NumbersDTOs { get; set; }
 
-        public ObservableCollection<string> Titles { get; set; } = new ObservableCollection<string>();
+        public List<string> Titles { get; set; } = new List<string>();
 
         private PlotModel CreateModel()
         {
             Dictionary<double, string> monthValueMap = new Dictionary<double, string>();
             var months = new List<string> { "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" };
             var plotModel = new PlotModel();
-            double i = -Math.PI / 2;
+            double i = 0;
             int month = 0;
             while (month < 12)
             {
@@ -61,29 +61,41 @@ namespace WpfApplication1
                     LineStyle = LineStyle.LongDash
                 };
                 monthValueMap.Add(Math.Round(i, 4), months[month]);
-                i += Math.PI / 6;
+                i += 31556926 / 12;
 
                 plotModel.Annotations.Add(Line);
                 month++;
             }
 
-            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = -Math.PI / 2, AbsoluteMaximum = 3 * Math.PI / 2, TicklineColor = OxyColors.White };
+            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0, AbsoluteMaximum = 31556926, TicklineColor = OxyColors.White };
             linearAxis.IsZoomEnabled = false;
             linearAxis.IsPanEnabled = false;
-            linearAxis.MajorStep = Math.PI / 6;
+            linearAxis.MajorStep = 31556926 / 12;
             linearAxis.LabelFormatter = (d) =>
             {
                 return monthValueMap.TryGetValue(Math.Round(d, 4), out string s) ? s : "янв";
             };
 
             plotModel.Axes.Add(linearAxis);
-            var function = new FunctionSeries(x => Math.Sin(x), -Math.PI / 2, 3 * Math.PI / 2, 0.1, "");
+            var function = new FunctionSeries(MakeFunction(), 0, 31556926, 500, "");
             function.Color = OxyColors.Black;
             plotModel.Series.Add(function);
 
             return plotModel;
         }
 
+
+        private Func<double, double> MakeFunction()
+        {
+            double alpha_st = 12 * Math.Pow(10, -6);
+            double alpha_gp = 28 * Math.Pow(10, -6);
+            double a = 26 * Math.Pow(10, -7);
+            double z = 20;
+            double delta_T = 31556926;
+            double delta_t0 = 50;
+            return t => delta_t0 * 100 * Math.Sqrt(a * delta_T/  2 * Math.PI) * ((alpha_st - alpha_gp) * Math.Exp(-z * Math.Sqrt(Math.PI / ( delta_T* a)))
+            * Math.Sin(2*Math.PI * t/delta_T  - z * Math.Sqrt(Math.PI / (delta_T * a)) - Math.PI / 4) - alpha_st * Math.Sin(2 * Math.PI * t / delta_T - Math.PI / 4));
+        }
         private PlotModel CreateModel2()
         {
             var plotModel = new PlotModel();
