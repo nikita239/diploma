@@ -1,0 +1,29 @@
+﻿<TabItem 
+        x:Class="WpfApplication1.Detectors"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:oxy="http://oxyplot.org/wpf"
+       xmlns:vm="clr-namespace:WpfApplication1"
+    Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="193">
+    <TabItem.DataContext>
+        <vm:DetectorsVM/>
+    </TabItem.DataContext>
+    <Canvas  Style="{StaticResource MainCanvasStyle}">
+        <Border Style="{StaticResource LeftBorderStyle}">
+            <Grid Style="{StaticResource LeftGridStyle}">
+                <Button x:Name="btnOpenFile" Command="{Binding ButtonClickCommand}" Content="Открыть файл" Margin="38,10,193,398"/>
+                <ComboBox Name ="combobox22" HorizontalAlignment="Left" Margin="38,63,0,0" VerticalAlignment="Top" Width="151" Height="30" ItemsSource="{Binding Path=Models}"
+                                             SelectedValuePath="Key" SelectedValue="{Binding Path=SelectedModel}" DisplayMemberPath="Key"
+                                             Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}"  
+                                             IsEditable="True" IsReadOnly="True" Text="Выберите номер">
+                </ComboBox>
+                <TextBox HorizontalAlignment="Left" Height="23" Margin="84,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="108" Text="{Binding Path=A}"/>
+            </Grid>
+        </Border>
+        <Border Style="{StaticResource RightBorderStyle}">
+            <Grid Style="{StaticResource RightGridStyle}">
+                <oxy:PlotView  Margin="30,30,30,30" Name="plot" Model="{Binding PlotModel}"/>
+            </Grid>
+        </Border>
+    </Canvas>
+</TabItem>
