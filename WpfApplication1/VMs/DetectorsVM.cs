@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using WpfApplication1.Properties;
 
@@ -21,19 +20,19 @@ namespace WpfApplication1
         public double T2 { get; set; }
     }
 
-    public class DetectorsVM: BaseVM
+    public class DetectorsVM : BaseVM
     {
-        private Dictionary<string, List<NumbersDTO>> _models;
-        private bool                                 _visibilityCondition;
-        private PlotModel                            _plotModel;
-        private string                               _selectedModel;
-        private double                               _a;
+        private List<string>                               _models;
+        private bool                          _visibilityCondition;
+        private PlotModel                               _plotModel;
+        private string                              _selectedModel;
+        private Dictionary<string, List<NumbersDTO>> _pointersDict;
 
         public DetectorsVM()
         {
-            Models = new Dictionary<string, List<NumbersDTO>>(0);
+            Models = new List<string>();
             VisibilityCondition = false;
-            A = 25;
+            _pointersDict = new Dictionary<string, List<NumbersDTO>>();
         }
 
         public bool VisibilityCondition
@@ -60,24 +59,14 @@ namespace WpfApplication1
             }
         }
 
-        public Dictionary<string, List<NumbersDTO>> Models
+        public List<string> Models
         {
             get { return _models; }
             set
             {
                 if (_models == value) return;
                 _models = value;
-                OnPropertyChanged("NumbersDTO");
-            }
-        }
-        public double A
-        {
-            get { return _a; }
-            set
-            {
-                if (_a == value) return;
-                _a = value;
-                OnPropertyChanged("A");
+                OnPropertyChanged("Models");
             }
         }
 
@@ -89,16 +78,16 @@ namespace WpfApplication1
                 if (_selectedModel == value) return;
                 _selectedModel = value;
                 OnPropertyChanged("SelectedModel");
-                PlotModel = CreateModel2();
+                PlotModel = CreateModel();
             }
         }
 
         public ICommand ButtonClickCommand
         {
-            get { return new DelegateCommand(FuncToCall, true); }
+            get { return new DelegateCommand(LoadFromXml, true); }
         }
 
-        private void FuncToCall()
+        private void LoadFromXml()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -108,6 +97,7 @@ namespace WpfApplication1
             };
 
             var headers = new List<string>();
+            _pointersDict = new Dictionary<string, List<NumbersDTO>>();
 
             ExcelDataSetConfiguration c = new ExcelDataSetConfiguration
             {
@@ -149,7 +139,7 @@ namespace WpfApplication1
                     {
                         if (i != 1)
                         {
-                            _models.Add(currentNumber, list);
+                            _pointersDict.Add(currentNumber, list);
                             list = new List<NumbersDTO>();
                         }
                         currentNumber = row.First().ToString();
@@ -165,9 +155,10 @@ namespace WpfApplication1
 
                     if (i == drows.Count - 1)
                     {
-                        _models.Add(currentNumber, list);
+                        _pointersDict.Add(currentNumber, list);
                     }
                 }
+                Models.AddRange(_pointersDict.Select(x => x.Key).ToList());
 
                 VisibilityCondition = true;
 
@@ -175,20 +166,13 @@ namespace WpfApplication1
             }
         }
 
-        private bool FuncToEvaluate(object context)
-        {
-            //this is called to evaluate whether FuncToCall can be called
-            //for example you can return true or false based on some validation logic
-            return true;
-        }
-
-        private PlotModel CreateModel2()
+        private PlotModel CreateModel()
         {
             var plotModel = new PlotModel();
 
             var function = new LineSeries() { Color = OxyColors.Black };
 
-            foreach (var d in _models[_selectedModel])
+            foreach (var d in _pointersDict[SelectedModel])
             {
                 function.Points.Add(new DataPoint(d.H, d.T2 - d.T1));
             }
