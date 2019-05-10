@@ -20,7 +20,7 @@ namespace WpfApplication1
         public double T2 { get; set; }
     }
 
-    public class DetectorsVM : BaseVM
+    public class DetectorsVM : BaseViewModel
     {
         private List<string>                               _models;
         private bool                          _visibilityCondition;

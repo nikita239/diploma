@@ -2,7 +2,7 @@
 
 namespace WpfApplication1
 {
-    public class BaseVM : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

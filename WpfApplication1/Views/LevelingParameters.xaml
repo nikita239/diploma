@@ -1,0 +1,29 @@
+﻿<TabItem
+        x:Class="WpfApplication1.LevelingParameters"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WpfApplication1"
+        Header=" Параметры&#xD;&#xA; нивелирования" Margin="0" ContentTemplate="{DynamicResource DataTemplate1}">
+    <TabItem.Resources>
+        <DataTemplate x:Key="DataTemplate1">
+            <Canvas  Style="{StaticResource MainCanvasStyle}">
+                <Border Style="{StaticResource LeftBorderStyle}">
+                    <Grid Style="{StaticResource LeftGridStyle}">
+                        <TextBox HorizontalAlignment="Left" Height="26" Margin="47,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                        <TextBox HorizontalAlignment="Left" Height="26" Margin="47,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                        <TextBox HorizontalAlignment="Left" Height="26" Margin="47,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+                        <Label Content="L" HorizontalAlignment="Left" Height="26" Margin="10,51,0,0" VerticalAlignment="Top" Width="21"/>
+                        <Label Content="T" HorizontalAlignment="Left" Height="26" Margin="10,105,0,0" VerticalAlignment="Top" Width="21"/>
+                        <Label Content="M" HorizontalAlignment="Left" Height="26" Margin="10,159,0,0" VerticalAlignment="Top" Width="21"/>
+                    </Grid>
+                </Border >
+                <Border Style="{StaticResource RightBorderStyle}">
+                    <Grid Style="{StaticResource RightGridStyle}" Height="415" Margin="-2,0,20,0" >
+                    </Grid>
+                </Border>
+            </Canvas>
+        </DataTemplate>
+    </TabItem.Resources>
+
+</TabItem>
+           

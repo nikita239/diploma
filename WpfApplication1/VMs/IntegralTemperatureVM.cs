@@ -5,7 +5,6 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 
 namespace WpfApplication1
@@ -16,7 +15,7 @@ namespace WpfApplication1
         public string Name { get; set; }
     }
 
-    public class IntegralTemperatureVM : BaseVM
+    public class IntegralTemperatureVM : BaseViewModel
     {
         #region Private Members
 

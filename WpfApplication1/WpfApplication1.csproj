@@ -78,8 +78,17 @@
     <Compile Include="Views\IntegralTemperature.xaml.cs">
       <DependentUpon>IntegralTemperature.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LevelingParameters.xaml.cs">
+      <DependentUpon>LevelingParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Permafrost.xaml.cs">
+      <DependentUpon>Permafrost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SeasonalFreezing.xaml.cs">
+      <DependentUpon>SeasonalFreezing.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VMs\BaseVM.cs" />
-    <Compile Include="VMs\SeasonalFreezing.cs" />
+    <Compile Include="VMs\SeasonalFreezingVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,6 +108,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IntegralTemperature.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LevelingParameters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Permafrost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SeasonalFreezing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

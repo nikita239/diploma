@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApplication1.VMs
+namespace WpfApplication1
 {
-    class SeasonalFreezing
+    class SeasonalFreezingVM: BaseViewModel
     {
     }
 }
