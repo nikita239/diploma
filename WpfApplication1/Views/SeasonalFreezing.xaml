@@ -56,10 +56,7 @@
                                 <Path Grid.Row="0" Data="M 0 5 L 10 5 L 5 0 Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Stretch="Fill" />
                                 <Path Grid.Row="2" Data="M 0 0 L 5 5 L 10 0 Z" Stroke="Black" Fill="Black" StrokeThickness="1" HorizontalAlignment="Center" Stretch="Fill" />
                             </Grid>
-                            <Path  Fill="Black" Data="M 0 5 L 10 5 L 5 0 Z" Margin="86,18,-86,-18"/>
-                            <Path  Fill="Black" Data="M 0 0 L 10 10 L 20 0 Z" Margin="30,13.875,-30,-13.875"/>
-                            <Path  Fill="Black" Data="M 0 10 L 10 0 L 10 20 Z" Margin="21.125,0,-21.125,0"/>
-                            <Path  Fill="Black" Data="M 0 0 L 10 10 L 0 20 Z" Margin="60,12,-60,-12"/>
+
 
                             <Grid Width="Auto" Margin="0" Canvas.Left="386" Canvas.Top="68" Height="312">
                                 <Grid.RowDefinitions>
@@ -127,7 +124,8 @@
                                 <Line Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Right" Stroke="Black" X1="0" X2="0" Y1="0" Y2="50" StrokeThickness="1" StrokeDashArray="4,5" Margin="0,0,1,0" />
                                 <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Stretch" Width="16" Height="Auto" Grid.Column="1" Margin="46,23,50,0"><Run Text="r"/><Run Text="як" FontSize="8"/></TextBlock>
                             </Grid>
-                            <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Top" Width="16" Height="18" Margin="0" Canvas.Left="56" Canvas.Top="23"><Run Text="r"/><Run Text="як" FontSize="8"/></TextBlock>
+                            <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Stretch" Width="16" Height="18" Margin="0" Canvas.Left="312" Canvas.Top="128"><Run Text="f"/></TextBlock>
+                            <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Stretch" Width="16" Height="18" Margin="0" Canvas.Left="400" Canvas.Top="223"><Run Text="z"/></TextBlock>
 
                         </Canvas>
                     </Grid>

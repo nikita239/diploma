@@ -31,6 +31,7 @@ namespace WpfApplication1
         {
             A = 26;
             Delta = 50;
+           // Alpha = 24;
             _plotModel = CreateModel();
             SolidParameter = SolidParameters.First().Name;
         }
@@ -51,7 +52,7 @@ namespace WpfApplication1
                 if (_alpha == value) return;
                 _alpha = value;
                 OnPropertyChanged("Alpha");
-                PlotModel.InvalidatePlot(true);
+                PlotModel = CreateModel();
             }
         }
 
@@ -150,11 +151,10 @@ namespace WpfApplication1
         private Func<double, double> MakeFunction()
         {
             double a = A * Math.Pow(10, -7);
-            double alpha_st = 12 * Math.Pow(10, -6);
-            double alpha_gp = 28 * Math.Pow(10, -6);
+            double alpha_st = 12 * Math.Pow(10, -6); //const
             double z = 20;
             double delta_T = 31556926;
-            return t => Delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - alpha_gp) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
+            return t => Delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - Alpha) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
             * Math.Sin(2 * Math.PI * t / delta_T - z * Math.Sqrt(Math.PI / (delta_T * a)) - Math.PI / 4) - alpha_st * Math.Sin(2 * Math.PI * t / delta_T - Math.PI / 4));
         }
     }
