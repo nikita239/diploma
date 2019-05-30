@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows.Input;
 using WpfApplication1.Properties;
 
-namespace WpfApplication1
+namespace WpfApplication1.VMs
 {
     public class NumbersDTO
     {

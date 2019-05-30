@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace WpfApplication1
+namespace WpfApplication1.Views
 {
     partial class IntegralTemperature: TabItem
     {

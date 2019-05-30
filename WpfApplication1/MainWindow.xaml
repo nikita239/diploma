@@ -1,15 +1,15 @@
-﻿<Window x:Class="WpfApplication1.MainWindow"
+﻿<Window x:Class="WpfApplication1.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:WpfApplication1"
+        xmlns:v="clr-namespace:WpfApplication1.Views"
         Title="MainWindow" ResizeMode="NoResize" Width="931" Height="576">
     <Grid>
         <TabControl Width="915" Style="{StaticResource TabControlStyle}" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="522" >
-            <vm:LevelingParameters/>
-            <vm:IntegralTemperature />
-            <vm:Detectors />
-            <vm:SeasonalFreezing />
-            <vm:Permafrost />
+            <v:LevelingParameters/>
+            <v:IntegralTemperature />
+            <v:Detectors />
+            <v:SeasonalFreezing />
+            <v:Permafrost />
         </TabControl>
     </Grid>
 </Window>

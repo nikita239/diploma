@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace WpfApplication1
+namespace WpfApplication1.VMs
 {
     public class ModelItem
     {

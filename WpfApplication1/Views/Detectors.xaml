@@ -1,9 +1,9 @@
 ﻿<TabItem 
-        x:Class="WpfApplication1.Detectors"
+        x:Class="WpfApplication1.Views.Detectors"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
      xmlns:oxy="http://oxyplot.org/wpf"
-       xmlns:vm="clr-namespace:WpfApplication1"
+     xmlns:vm="clr-namespace:WpfApplication1.VMs"
     Header="Датчики" Margin="0" HorizontalAlignment="Left" Width="193">
     <TabItem.DataContext>
         <vm:DetectorsVM/>

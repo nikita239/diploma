@@ -1,8 +1,8 @@
 ﻿<TabItem 
-        x:Class="WpfApplication1.SeasonalFreezing"
+        x:Class="WpfApplication1.Views.SeasonalFreezing"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:WpfApplication1"
+        xmlns:vm="clr-namespace:WpfApplication1.VMs"
     Header="Расчет параметров НП для зоны &#xD;&#xA;сезонного промерзания" HorizontalAlignment="Left" Margin="0" Width="215" Height="44" Padding="0" ContentTemplate="{DynamicResource DataTemplate1}">
     <TabItem.Resources>
         <DataTemplate x:Key="DataTemplate1">

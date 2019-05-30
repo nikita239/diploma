@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 
-namespace WpfApplication1
+namespace WpfApplication1.VMs
 {
     public class DataStructure
     {
