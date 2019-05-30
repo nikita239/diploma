@@ -10,42 +10,51 @@
     <Canvas  Style="{StaticResource MainCanvasStyle}">
         <Border Style="{StaticResource LeftBorderStyle}">
             <Grid Style="{StaticResource LeftGridStyle}">
-                <Grid Margin="0,0,0,100">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Расчет параметров НП для зоны сезонного промерзания" Grid.ColumnSpan="2" VerticalAlignment="Center" Grid.Column="1" />
-                    <ComboBox Name ="combobox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"  VerticalAlignment="Center" ItemsSource="{Binding Path=Parameters}"
+                <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="250" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Label Content="Расчет параметров НП для зоны сезонного промерзания" VerticalAlignment="Center" Grid.Row="0" Margin="15,0,0,0"/>
+                <ComboBox Name ="combobox" Grid.Row="1" ItemsSource="{Binding Path=Parameters}" 
                                               SelectedValue="{Binding Path=SelectedParameter}" 
-                                             IsEditable="True" IsReadOnly="True" Text="Параметр" Margin="0,18,0,17" Width="100"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="L"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="T"></TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Text="M"></TextBlock>
-                    <TextBlock Grid.Row="5" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center"><Run Text="V"/><Run FontSize="8" Text="прогн"/></TextBlock>
-                    <TextBox Grid.Row="2" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Height="23"  TextWrapping="Wrap"/>
-
-                    <TextBlock Grid.Row="2" Grid.Column="2" TextWrapping="Wrap" Text="Протяженность линии нивелирования" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" />
-                    <TextBlock Grid.Row="3" Grid.Column="2" TextWrapping="Wrap" Text="Периодичность нивелирования" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Средняя квадратичная ошибка нивелирования на 1 км хода" TextWrapping="Wrap" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                    <TextBlock Grid.Row="5" Grid.Column="2" TextWrapping="Wrap" Text="Глубина сезонного промерзания" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                </Grid>
+                                             IsEditable="True" IsReadOnly="True" Text="Параметр" Width="150" HorizontalAlignment="Left"  Margin="15,0,0,0"/>
+                <ItemsControl ItemsSource="{Binding Cells}" x:Name="grid"  Grid.Row="2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                                <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock  Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5, 0, 0, 0" HorizontalAlignment="Center"><Run Text="{Binding TextBlock}"/><Run FontSize="8" Text="{Binding TextBlock2}"/></TextBlock>
+                                    <TextBox Grid.Column="1" Grid.Row="0" Height="23" TextWrapping="Wrap" Margin="15, 0, 0, 0" Validation.Error="validationError">
+                                        <TextBox.Text>
+                                            <Binding Path="TextBox" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <TextBlock  Grid.Column="2" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Description}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button x:Name="btnOpenFile" Command="{Binding ButtonClickCommand}" Content="Открыть файл" Grid.Row="3" Width="130" HorizontalAlignment="Left"/>
+            </Grid>
             </Grid>
         </Border >
         <Border Style="{StaticResource RightBorderStyle}">
             <Grid Style="{StaticResource RightGridStyle}">
+                <TextBlock  Text="{Binding DisplayString}" HorizontalAlignment="Center" Margin="0,15,0,0" FontSize="20"/>
             </Grid>
         </Border>
     </Canvas>
