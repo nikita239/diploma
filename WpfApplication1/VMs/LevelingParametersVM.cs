@@ -7,47 +7,57 @@ namespace WpfApplication1.VMs
 {
     public class DataStructure
     {
-        public string TextBlock { get; set; }
+        public LevelingParameters TextBlock { get; set; }
         public string TextBlock2 { get; set; }
-        public double TextBox { get; set; }
+        public double? Value { get; set; }
+        public string Units { get; set; }
         public string Description { get; set; }
+    }
+
+    public enum LevelingParameters
+    {
+        L, T, M, V
     }
 
     public class LevelingParametersVM : BaseViewModel
     {
-        private List<string> _parameters;
-        private string _selectedParameter;
-        private bool _visibilityCondition;
+        private List<DataStructure> _parameters;
+        private DataStructure _selectedParameter;
         private List<DataStructure> _cells;
         private List<DataStructure> _allValues;
         private string _displayString;
+        private string _displayString2;
 
         public LevelingParametersVM()
         {
-            Parameters = new List<string> { "L", "T", "M", "V" };
             _allValues = new List<DataStructure>() {
                 new DataStructure{
-                    TextBlock = "L",
-                    Description = "Протяженность линии нивелирования"
+                    TextBlock = LevelingParameters.L,
+                    Description = "Протяженность линии нивелирования",
+                    Units = "(км)"
                 },
                 new DataStructure{
-                    TextBlock = "T",
-                    Description = "Периодичность нивелирования"
+                    TextBlock = LevelingParameters.T,
+                    Description = "Периодичность нивелирования",
+                    Units = "(год)"
                 },
                 new DataStructure{
-                    TextBlock = "M",
-                    Description = "Средняя квадратичная ошибка нивелирования на 1 км хода"
+                    TextBlock = LevelingParameters.M,
+                    Description = "Средняя квадратичная ошибка нивелирования на 1 км хода",
+                    Units = "(мм/км)"
                 },
                 new DataStructure{
-                    TextBlock = "V",
+                    TextBlock = LevelingParameters.V,
                     TextBlock2 = "прогн",
-                    Description = "Прогнозная скорость"
+                    Description = "Прогнозная скорость",
+                    Units = "(мм в год)"
                 }
             };
+            Parameters = _allValues.ToList();
             Cells = new List<DataStructure>();
         }
 
-        public List<string> Parameters
+        public List<DataStructure> Parameters
         {
             get { return _parameters; }
             set
@@ -58,15 +68,18 @@ namespace WpfApplication1.VMs
             }
         }
 
-        public string SelectedParameter
+        public DataStructure SelectedParameter
         {
             get { return _selectedParameter; }
             set
             {
                 if (_selectedParameter == value) return;
                 _selectedParameter = value;
-                var item = _allValues.Where(x => x.TextBlock == value);
-               // if(item !)
+                List<DataStructure> item = _allValues.Where(x => x.TextBlock == value.TextBlock).ToList();
+                if (value.TextBlock != LevelingParameters.M)
+                {
+                    item.AddRange(_allValues.Where(x => x.TextBlock == LevelingParameters.M));
+                }
                 Cells = _allValues.Except(item).ToList();
                 OnPropertyChanged("SelectedParameter");
             }
@@ -97,46 +110,74 @@ namespace WpfApplication1.VMs
                 }
             }
         }
-
+        public string DisplayString2
+        {
+            get { return _displayString2; }
+            set
+            {
+                if (_displayString2 != value)
+                {
+                    _displayString2 = value;
+                    OnPropertyChanged("DisplayString2");
+                }
+            }
+        }
 
         public ICommand ButtonClickCommand
         {
             get { return new DelegateCommand(FormatDisplayString, true); }
         }
 
-
+        private void FormatDisplayString(LevelingParameters parameter, Func<double, double> func, string prefix, ref string _displayString, ref string _displayString2)
+        {
+            if (parameter != LevelingParameters.M)
+            {
+                DisplayString = String.Concat("при M = 1, ", prefix, Math.Round(func(1), 1));
+                DisplayString2 = String.Concat("при M = 2, ", prefix, Math.Round(func(2), 1));
+            }
+        }
 
         private void FormatDisplayString()
         {
-            var l = _cells.FirstOrDefault(x => x.TextBlock == "L")?.TextBox;
-            var m = _cells.FirstOrDefault(x => x.TextBlock == "M")?.TextBox;
-            var v = _cells.FirstOrDefault(x => x.TextBlock == "V")?.TextBox;
-            var t = _cells.FirstOrDefault(x => x.TextBlock == "T")?.TextBox;
-            double? value = 0;
-            switch (_selectedParameter)
+            switch (_selectedParameter.TextBlock)
             {
-                case "L":
+                case LevelingParameters.L:
                     {
-                        value = t * t * v * v / (32 * m * m);
-                        DisplayString = String.Concat("L ≤ ", Math.Round(value.Value, 1));
+                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
+                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
+
+                        Func<double, double> func = m => t * t * v * v / (32 * m * m);
+
+                        FormatDisplayString(LevelingParameters.L, func, "L ≤ ", ref _displayString, ref _displayString2);
                         break;
                     }
-                case "M":
+                case LevelingParameters.M:
                     {
-                        value = t * (v / Math.Sqrt(32 * l.Value));
-                        DisplayString = String.Concat("M ≤ ", Math.Round(value.Value, 1));
+                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
+                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
+                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
+                        var value = t * (v / Math.Sqrt(32 * l));
+                        DisplayString = String.Concat("M ≤ ", Math.Round(value, 1));
                         break;
                     }
-                case "V":
+                case LevelingParameters.V:
                     {
-                        value = m * Math.Sqrt(32 * l.Value) / t;
-                        DisplayString = String.Concat("V ≥ ", Math.Round(value.Value, 1));
+                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
+                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
+
+                        Func<double, double> func = m => m * Math.Sqrt(32 * l) / t;
+
+                        FormatDisplayString(LevelingParameters.V, func, "V ≥ ", ref _displayString, ref _displayString2);
                         break;
                     }
-                case "T":
+                case LevelingParameters.T:
                     {
-                        value = m * Math.Sqrt(32 * l.Value) / v;
-                        DisplayString = String.Concat("T ≥ ", Math.Round(value.Value, 1 ));
+                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
+                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
+
+                        Func<double, double> func = m => m * Math.Sqrt(32 * l) / v;
+
+                        FormatDisplayString(LevelingParameters.T, func, "T ≥ ", ref _displayString, ref _displayString2);
                         break;
                     }
             }

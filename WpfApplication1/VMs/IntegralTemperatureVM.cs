@@ -40,8 +40,9 @@ namespace WpfApplication1.VMs
 
         public ObservableCollection<ModelItem> SolidParameters => new ObservableCollection<ModelItem>(new List<ModelItem> {
                 new ModelItem { Id = 1, Name = "Песок" },
-                new ModelItem { Id = 1, Name = "Глина" },
-                new ModelItem { Id = 1, Name = "Суглинок" }
+                new ModelItem { Id = 2, Name = "Глина" },
+                new ModelItem { Id = 3, Name = "Суглинок" },
+                new ModelItem { Id = 4, Name = "Ручной ввод" }
             });
 
         public double Alpha
