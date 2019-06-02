@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Models\Models.cs" />
     <Compile Include="Views\Detectors.xaml.cs">
       <DependentUpon>Detectors.xaml</DependentUpon>
     </Compile>
@@ -95,6 +96,7 @@
     </Compile>
     <Compile Include="VMs\BaseVM.cs" />
     <Compile Include="VMs\LevelingParametersVM.cs" />
+    <Compile Include="VMs\PermafrostVM.cs" />
     <Compile Include="VMs\SeasonalFreezingVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +151,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -15,8 +15,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="220"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Параметры породы:" Height="26"/>
                 <ComboBox Grid.Row="1" ItemsSource="{Binding SolidParameters}" DisplayMemberPath="Solid" SelectedValue="{Binding Path=SolidParameter}"  SelectedIndex="0"
@@ -47,7 +47,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Button Grid.Row="3" x:Name="btnOpenFile" Command="{Binding ButtonClickCommand}" Content="Рассчитать" Width="130" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+                <Button x:Name="btnOpenFile" Command="{Binding ButtonClickCommand}" Content="Рассчитать" Grid.Row="3" Width="130" HorizontalAlignment="Left" Margin="15,0,0,0"/>
             </Grid>
         </Border>
         <Border Style="{StaticResource RightBorderStyle}">

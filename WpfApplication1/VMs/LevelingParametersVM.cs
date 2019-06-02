@@ -2,23 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using WpfApplication1.Models;
 
 namespace WpfApplication1.VMs
 {
-    public class DataStructure
-    {
-        public object TextBlock { get; set; }
-        public string TextBlock2 { get; set; }
-        public double? Value { get; set; }
-        public string Units { get; set; }
-        public string Description { get; set; }
-    }
-
-    public enum LevelingParameters
-    {
-        L, T, M, V
-    }
-
     public class LevelingParametersVM : BaseViewModel
     {
         private List<DataStructure> _parameters;

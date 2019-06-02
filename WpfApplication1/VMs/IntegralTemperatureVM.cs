@@ -4,32 +4,12 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Numerics;
-using MathNet.Numerics;
 using System.Windows.Input;
+using WpfApplication1.Models;
 
 namespace WpfApplication1.VMs
 {
-    public enum IntergralTemperatureParameters
-    {
-        α, a, Δt, z
-    }
-
-
-    public class MapValues
-    {
-        public string Solid { get; set; }
-        public List<Map> Values { get; set; }
-    }
-
-    public class Map
-    {
-        public IntergralTemperatureParameters Name { get; set; }
-        public double Value { get; set; }
-    }
-
     public class IntegralTemperatureVM : BaseViewModel
     {
         #region Private Members
@@ -43,7 +23,6 @@ namespace WpfApplication1.VMs
 
         public IntegralTemperatureVM()
         {
-
             _cells = new List<DataStructure>() {
                 new DataStructure{
                     TextBlock = IntergralTemperatureParameters.α,
@@ -179,7 +158,6 @@ namespace WpfApplication1.VMs
             get { return new DelegateCommand(()=> PlotModel = CreateModel(), true); }
         }
 
-
         public MapValues SolidParameter
         {
             get { return _solidParameter; }
@@ -243,12 +221,6 @@ namespace WpfApplication1.VMs
                 plotModel.Annotations.Add(Line);
                 month++;
             }
-            //double dd = 8 / 9, c = -89.4, b = 1 / 3, a = 0.943542789; // x^3 - x
-            //var roots = FindRoots.Cubic(dd, c, b, a);
-            //Complex root1 = roots.Item1;
-            //Complex root2 = roots.Item2;
-            //Complex root3 = roots.Item3;
-
 
             var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0, AbsoluteMaximum = 31556926, Title = "ererer", TitlePosition = 4 };
             linearAxis.IsZoomEnabled = false;
