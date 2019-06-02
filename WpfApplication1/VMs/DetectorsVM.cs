@@ -24,14 +24,17 @@ namespace WpfApplication1.VMs
     {
         private List<string>                               _models;
         private bool                          _visibilityCondition;
+        private bool                         _visibilityCondition2;
         private PlotModel                               _plotModel;
         private string                              _selectedModel;
         private Dictionary<string, List<NumbersDTO>> _pointersDict;
+        private double                                         _ΔH;
 
         public DetectorsVM()
         {
             Models = new List<string>();
             VisibilityCondition = false;
+            VisibilityCondition2 = false;
             _pointersDict = new Dictionary<string, List<NumbersDTO>>();
         }
 
@@ -44,6 +47,32 @@ namespace WpfApplication1.VMs
                 {
                     _visibilityCondition = value;
                     OnPropertyChanged("VisibilityCondition");
+                }
+            }
+        }
+
+        public bool VisibilityCondition2
+        {
+            get { return _visibilityCondition2; }
+            set
+            {
+                if (_visibilityCondition2 != value)
+                {
+                    _visibilityCondition2 = value;
+                    OnPropertyChanged("VisibilityCondition2");
+                }
+            }
+        }
+
+        public double ΔH
+        {
+            get { return _ΔH; }
+            set
+            {
+                if (_ΔH != value)
+                {
+                    _ΔH = value;
+                    OnPropertyChanged("ΔH");
                 }
             }
         }
@@ -77,6 +106,7 @@ namespace WpfApplication1.VMs
             {
                 if (_selectedModel == value) return;
                 _selectedModel = value;
+                VisibilityCondition2 = true;
                 OnPropertyChanged("SelectedModel");
                 PlotModel = CreateModel();
             }
@@ -146,9 +176,9 @@ namespace WpfApplication1.VMs
                     }
                     NumbersDTO dto = new NumbersDTO
                     {
-                        H = Convert.ToSingle(row[1]),
-                        T1 = Convert.ToSingle(row[2]),
-                        T2 = Convert.ToSingle(row[3])
+                        H = Convert.ToDouble(row[1]),
+                        T1 = Convert.ToDouble(row[2]),
+                        T2 = Convert.ToDouble(row[3])
                     };
 
                     list.Add(dto);
@@ -172,10 +202,17 @@ namespace WpfApplication1.VMs
 
             var function = new LineSeries() { Color = OxyColors.Black };
 
-            foreach (var d in _pointersDict[SelectedModel])
+            double sum = 0;
+            double h_prev = 0.5;
+            for(int i = 0; i < _pointersDict[SelectedModel].Count; i++)
             {
+                var d = _pointersDict[SelectedModel][i];
                 function.Points.Add(new DataPoint(d.H, d.T2 - d.T1));
+                sum += (d.T1 - d.T2) * (d.H * h_prev);
+                h_prev = d.H - h_prev;
             }
+
+            ΔH = sum * 12 * Math.Pow(10, -6) * Math.Pow(10, 3);
 
             var linearAxis = new LinearAxis { Position = AxisPosition.Bottom };
             linearAxis.IsZoomEnabled = false;

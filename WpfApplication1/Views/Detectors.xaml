@@ -11,12 +11,20 @@
     <Canvas  Style="{StaticResource MainCanvasStyle}">
         <Border Style="{StaticResource LeftBorderStyle}">
             <Grid Style="{StaticResource LeftGridStyle}">
-                <Button x:Name="btnOpenFile" Command="{Binding ButtonClickCommand}" Content="Открыть файл" Margin="38,10,193,398"/>
-                <ComboBox Name ="combobox22" HorizontalAlignment="Left" Margin="38,63,0,0" VerticalAlignment="Top" Width="151" Height="30" ItemsSource="{Binding Path=Models}"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Command="{Binding ButtonClickCommand}" Content="Открыть файл" Width="100" Height="30" Margin="15,0,0,0" HorizontalAlignment="Left" />
+                <ComboBox Grid.Row="1" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="151" Height="30" ItemsSource="{Binding Path=Models}" Margin="15,0,0,0"
                                               SelectedValue="{Binding Path=SelectedModel}"
                                              Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}"  
                                              IsEditable="True" IsReadOnly="True" Text="Выберите номер">
                 </ComboBox>
+                <TextBlock Grid.Row="2" Text="ΔH = " Visibility="{Binding VisibilityCondition2, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15,0,0,0">
+                     <Run Text="{Binding ΔH}"/>
+                </TextBlock>
             </Grid>
         </Border>
         <Border Style="{StaticResource RightBorderStyle}">

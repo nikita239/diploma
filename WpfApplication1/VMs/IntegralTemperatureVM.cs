@@ -243,8 +243,7 @@ namespace WpfApplication1.VMs
                 plotModel.Annotations.Add(Line);
                 month++;
             }
-
-            //double dd = 8/9, c = -89.4, b = 1/3, a = 0.943542789; // x^3 - x
+            //double dd = 8 / 9, c = -89.4, b = 1 / 3, a = 0.943542789; // x^3 - x
             //var roots = FindRoots.Cubic(dd, c, b, a);
             //Complex root1 = roots.Item1;
             //Complex root2 = roots.Item2;

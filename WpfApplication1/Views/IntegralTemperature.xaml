@@ -43,7 +43,7 @@
                                 <TextBlock Grid.Column="1" HorizontalAlignment="Right"><Run FontSize="8" Text="{Binding TextBlock2}"/></TextBlock>
                                 <TextBlock  Grid.Column="2" Grid.Row="0" Text="{Binding Units}"  VerticalAlignment="Center"  Margin="5, 0, 0, 0"/>
                                 <TextBlock  Grid.Column="3" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Description}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                            </Grid>
+                            </Grid> 
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
