@@ -7,7 +7,7 @@ namespace WpfApplication1.VMs
 {
     public class DataStructure
     {
-        public LevelingParameters TextBlock { get; set; }
+        public object TextBlock { get; set; }
         public string TextBlock2 { get; set; }
         public double? Value { get; set; }
         public string Units { get; set; }
@@ -76,11 +76,13 @@ namespace WpfApplication1.VMs
                 if (_selectedParameter == value) return;
                 _selectedParameter = value;
                 List<DataStructure> item = _allValues.Where(x => x.TextBlock == value.TextBlock).ToList();
-                if (value.TextBlock != LevelingParameters.M)
+                if ((LevelingParameters)value.TextBlock != LevelingParameters.M)
                 {
-                    item.AddRange(_allValues.Where(x => x.TextBlock == LevelingParameters.M));
+                    item.AddRange(_allValues.Where(x => (LevelingParameters)x.TextBlock == LevelingParameters.M));
                 }
                 Cells = _allValues.Except(item).ToList();
+                DisplayString = String.Empty;
+                DisplayString2 = String.Empty;
                 OnPropertyChanged("SelectedParameter");
             }
         }
@@ -143,8 +145,8 @@ namespace WpfApplication1.VMs
             {
                 case LevelingParameters.L:
                     {
-                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
-                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
+                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
+                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
 
                         Func<double, double> func = m => t * t * v * v / (32 * m * m);
 
@@ -153,17 +155,17 @@ namespace WpfApplication1.VMs
                     }
                 case LevelingParameters.M:
                     {
-                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
-                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
-                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
+                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
+                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
+                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
                         var value = t * (v / Math.Sqrt(32 * l));
                         DisplayString = String.Concat("M ≤ ", Math.Round(value, 1));
                         break;
                     }
                 case LevelingParameters.V:
                     {
-                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
-                        var t = _cells.First(x => x.TextBlock == LevelingParameters.T).Value.Value;
+                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
+                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
 
                         Func<double, double> func = m => m * Math.Sqrt(32 * l) / t;
 
@@ -172,8 +174,8 @@ namespace WpfApplication1.VMs
                     }
                 case LevelingParameters.T:
                     {
-                        var l = _cells.First(x => x.TextBlock == LevelingParameters.L).Value.Value;
-                        var v = _cells.First(x => x.TextBlock == LevelingParameters.V).Value.Value;
+                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
+                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
 
                         Func<double, double> func = m => m * Math.Sqrt(32 * l) / v;
 

@@ -6,13 +6,28 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
+using MathNet.Numerics;
+using System.Windows.Input;
 
 namespace WpfApplication1.VMs
 {
-    public class ModelItem
+    public enum IntergralTemperatureParameters
     {
-        public int    Id   { get; set; }
-        public string Name { get; set; }
+        α, a, Δt, z
+    }
+
+
+    public class MapValues
+    {
+        public string Solid { get; set; }
+        public List<Map> Values { get; set; }
+    }
+
+    public class Map
+    {
+        public IntergralTemperatureParameters Name { get; set; }
+        public double Value { get; set; }
     }
 
     public class IntegralTemperatureVM : BaseViewModel
@@ -20,76 +35,168 @@ namespace WpfApplication1.VMs
         #region Private Members
 
         private PlotModel _plotModel;
-        private string    _solidParameter;
-        private double    _alpha;
-        private double    _a;
-        private double    _delta;
+        private MapValues _solidParameter;
+        private List<MapValues> _solidParameters;
+        private List<DataStructure> _cells;
 
         #endregion
 
         public IntegralTemperatureVM()
         {
-            A = 26;
-            Delta = 50;
-           // Alpha = 24;
-            _plotModel = CreateModel();
-            SolidParameter = SolidParameters.First().Name;
+
+            _cells = new List<DataStructure>() {
+                new DataStructure{
+                    TextBlock = IntergralTemperatureParameters.α,
+                    TextBlock2 = "-6",
+                    Description = "Коэффициент теплового линейного расширения горной породы",
+                    Units = "(1/℃)",
+                },
+                new DataStructure{
+                    TextBlock =IntergralTemperatureParameters.a,
+                    TextBlock2 = "-7",
+                    Description = "Температуропроводность горной породы",
+                    Units = "(м²/c)"
+                },
+                new DataStructure{
+                    TextBlock = IntergralTemperatureParameters.Δt,
+                    Description = "Амплитуда колебания температуры воздуха на поверхности",
+                    Units = "(℃)"
+                },
+                new DataStructure{
+                    TextBlock = IntergralTemperatureParameters.z,
+                    Description = "Глубина заложения",
+                    Units = "(м)"
+                }
+            };
+            SolidParameters = new List<MapValues>
+            {
+                new MapValues
+                {
+                    Solid = "Песок",
+                    Values = new List<Map>
+                    {
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.a,
+                            Value = 3
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.z,
+                            Value = 4
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.α,
+                            Value = 5
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.Δt,
+                            Value = 6
+                        }
+                    }
+                },
+                new MapValues
+                {
+                    Solid = "Глина",
+                    Values = new List<Map>
+                    {
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.a,
+                            Value = 13
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.z,
+                            Value = 14
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.α,
+                            Value = 15
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.Δt,
+                            Value = 16
+                        }
+                    }
+                },
+                new MapValues
+                {
+                    Solid = "Суглинок",
+                    Values = new List<Map>
+                    {
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.a,
+                            Value = 23
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.z,
+                            Value = 24
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.α,
+                            Value = 25
+                        },
+                        new Map
+                        {
+                            Name = IntergralTemperatureParameters.Δt,
+                            Value = 26
+                        }
+                    }
+                },
+                new MapValues
+                {
+                    Solid = "Ручной ввод",
+                    Values = new List<Map>()
+                }
+            };
+            SolidParameter = SolidParameters.First();
+            PlotModel = CreateModel();
         }
 
         #region Properties
-
-        public ObservableCollection<ModelItem> SolidParameters => new ObservableCollection<ModelItem>(new List<ModelItem> {
-                new ModelItem { Id = 1, Name = "Песок" },
-                new ModelItem { Id = 2, Name = "Глина" },
-                new ModelItem { Id = 3, Name = "Суглинок" },
-                new ModelItem { Id = 4, Name = "Ручной ввод" }
-            });
-
-        public double Alpha
+        public List<MapValues> SolidParameters
         {
-            get { return _alpha; }
+            get { return _solidParameters; }
             set
             {
-                if (_alpha == value) return;
-                _alpha = value;
-                OnPropertyChanged("Alpha");
-                PlotModel = CreateModel();
+                if (_solidParameters == value) return;
+                _solidParameters = value;
+               // PlotModel = CreateModel();
+                OnPropertyChanged("SolidParameters");
             }
         }
 
-        public double A
+        public ICommand ButtonClickCommand
         {
-            get { return _a; }
-            set
-            {
-                if (_a == value) return;
-                _a = value;
-                OnPropertyChanged("A");
-                PlotModel = CreateModel();
-            }
+            get { return new DelegateCommand(()=> PlotModel = CreateModel(), true); }
         }
 
-        public double Delta
-        {
-            get { return _delta; }
-            set
-            {
-                if (_delta == value) return;
-                _delta = value;
-                OnPropertyChanged("Delta");
-                PlotModel = CreateModel();
-            }
-        }
 
-        public string SolidParameter
+        public MapValues SolidParameter
         {
             get { return _solidParameter; }
             set
             {
                 if (_solidParameter == value) return;
                 _solidParameter = value;
+                if (value.Solid == "Ручной ввод")
+                {
+                    Cells = Cells.Select(c => { c.Value = null; return c; }).ToList();
+                }
+                else
+                {
+                    Cells = Cells.Select(c => { c.Value = value.Values.First(x => x.Name == (IntergralTemperatureParameters)c.TextBlock).Value; return c; }).ToList();
+                }
+                PlotModel = CreateModel();
                 OnPropertyChanged("SolidParameter");
-                PlotModel.InvalidatePlot(true);
             }
         }
 
@@ -106,12 +213,17 @@ namespace WpfApplication1.VMs
 
         #endregion
 
-
         private PlotModel CreateModel()
         {
             Dictionary<double, string> monthValueMap = new Dictionary<double, string>();
             var months = new List<string> { "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" };
-            var plotModel = new PlotModel();
+            var plotModel = new PlotModel()
+            {
+                Title = "Деформация реперной трубы",
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal
+            };
 
             double i = 0;
             int month = 0;
@@ -132,7 +244,14 @@ namespace WpfApplication1.VMs
                 month++;
             }
 
-            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0, AbsoluteMaximum = 31556926, TicklineColor = OxyColors.White };
+            //double dd = 8/9, c = -89.4, b = 1/3, a = 0.943542789; // x^3 - x
+            //var roots = FindRoots.Cubic(dd, c, b, a);
+            //Complex root1 = roots.Item1;
+            //Complex root2 = roots.Item2;
+            //Complex root3 = roots.Item3;
+
+
+            var linearAxis = new LinearAxis { Position = AxisPosition.Bottom, AbsoluteMinimum = 0, AbsoluteMaximum = 31556926, Title = "ererer", TitlePosition = 4 };
             linearAxis.IsZoomEnabled = false;
             linearAxis.IsPanEnabled = false;
             linearAxis.MajorStep = 31556926 / 12;
@@ -140,7 +259,11 @@ namespace WpfApplication1.VMs
             {
                 return monthValueMap.TryGetValue(Math.Round(d, 4), out string s) ? s : "янв";
             };
-
+            var arrowAnnotation = new ArrowAnnotation
+            {
+                StartPoint = new DataPoint(0, 0),
+                EndPoint = new DataPoint(10, 10)
+            };
             plotModel.Axes.Add(linearAxis);
             var function = new FunctionSeries(MakeFunction(), 0, 31556926, 500, "");
             function.Color = OxyColors.Black;
@@ -149,13 +272,29 @@ namespace WpfApplication1.VMs
             return plotModel;
         }
 
+        public List<DataStructure> Cells
+        {
+            get { return _cells; }
+            set
+            {
+                if (_cells != value)
+                {
+                    _cells = value;
+                    OnPropertyChanged("Cells");
+                }
+            }
+        }
+
         private Func<double, double> MakeFunction()
         {
-            double a = A * Math.Pow(10, -7);
+            var selectedParameter = _cells;
+            double a = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock== IntergralTemperatureParameters.a).Value.Value * Math.Pow(10, -7);
             double alpha_st = 12 * Math.Pow(10, -6); //const
-            double z = 20;
+            double z = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.z).Value.Value;
+            double delta = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.Δt).Value.Value;
+            double alpha = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.α).Value.Value;
             double delta_T = 31556926;
-            return t => Delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - Alpha) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
+            return t => delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - alpha) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
             * Math.Sin(2 * Math.PI * t / delta_T - z * Math.Sqrt(Math.PI / (delta_T * a)) - Math.PI / 4) - alpha_st * Math.Sin(2 * Math.PI * t / delta_T - Math.PI / 4));
         }
     }
