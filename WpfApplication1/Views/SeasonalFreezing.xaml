@@ -15,7 +15,7 @@
                     <RowDefinition Height="210"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Заголовок" Grid.Row="0" Margin="15,15,0,0"> </TextBlock>
+                <TextBlock Text="Параметры породы:" Grid.Row="0" Margin="15,15,0,0"> </TextBlock>
                 <ItemsControl ItemsSource="{Binding Cells}" Grid.Row="1">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

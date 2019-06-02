@@ -31,7 +31,7 @@ namespace WpfApplication1.VMs
                     TextBlock = PermafrostParameters.Р,
                     TextBlock2 = "усм",
                     Description = "Коэффициент удельного смерзания горной породы",
-                    Units = "(℃)"
+                    Units = "(Н/см²)"
                 }
             };
             VisibilityCondition = false;
