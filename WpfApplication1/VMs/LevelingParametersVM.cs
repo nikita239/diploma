@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using WpfApplication1.Models;
 
@@ -117,58 +118,64 @@ namespace WpfApplication1.VMs
             get { return new DelegateCommand(FormatDisplayString, true); }
         }
 
-        private void FormatDisplayString(LevelingParameters parameter, Func<double, double> func, string prefix, ref string _displayString, ref string _displayString2)
+        private void FormatDisplayString(LevelingParameters parameter, Func<double, double> func, string prefix, string postfix, ref string _displayString, ref string _displayString2)
         {
             if (parameter != LevelingParameters.M)
             {
-                DisplayString = String.Concat("при M = 1, ", prefix, Math.Round(func(1), 1));
-                DisplayString2 = String.Concat("при M = 2, ", prefix, Math.Round(func(2), 1));
+                DisplayString = String.Concat("Нивелирование I класса (M = 1 мм/км): ", prefix, Math.Round(func(1), 1), postfix);
+                DisplayString2 = String.Concat("Нивелирование II класса (M = 2 мм/км): ", prefix, Math.Round(func(2), 1), postfix);
             }
         }
 
         private void FormatDisplayString()
         {
-            switch (_selectedParameter.TextBlock)
+            try {
+                switch (_selectedParameter.TextBlock)
+                {
+                    case LevelingParameters.L:
+                        {
+                            var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
+                            var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
+
+                            Func<double, double> func = m => t * t * v * v / (32 * m * m);
+
+                            FormatDisplayString(LevelingParameters.L, func, "L ≤ ", "км", ref _displayString, ref _displayString2);
+                            break;
+                        }
+                    case LevelingParameters.M:
+                        {
+                            var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
+                            var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
+                            var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
+                            var value = t * (v / Math.Sqrt(32 * l));
+                            DisplayString = String.Concat("M ≤ ", String.Empty, Math.Round(value, 1));
+                            break;
+                        }
+                    case LevelingParameters.V:
+                        {
+                            var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
+                            var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
+
+                            Func<double, double> func = m => m * Math.Sqrt(32 * l) / t;
+
+                            FormatDisplayString(LevelingParameters.V, func, "V ≥ ", String.Empty, ref _displayString, ref _displayString2);
+                            break;
+                        }
+                    case LevelingParameters.T:
+                        {
+                            var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
+                            var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
+
+                            Func<double, double> func = m => m * Math.Sqrt(32 * l) / v;
+
+                            FormatDisplayString(LevelingParameters.T, func, "T ≥ ", String.Empty, ref _displayString, ref _displayString2);
+                            break;
+                        }
+                }
+            }
+            catch
             {
-                case LevelingParameters.L:
-                    {
-                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
-                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
-
-                        Func<double, double> func = m => t * t * v * v / (32 * m * m);
-
-                        FormatDisplayString(LevelingParameters.L, func, "L ≤ ", ref _displayString, ref _displayString2);
-                        break;
-                    }
-                case LevelingParameters.M:
-                    {
-                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
-                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
-                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
-                        var value = t * (v / Math.Sqrt(32 * l));
-                        DisplayString = String.Concat("M ≤ ", Math.Round(value, 1));
-                        break;
-                    }
-                case LevelingParameters.V:
-                    {
-                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
-                        var t = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.T).Value.Value;
-
-                        Func<double, double> func = m => m * Math.Sqrt(32 * l) / t;
-
-                        FormatDisplayString(LevelingParameters.V, func, "V ≥ ", ref _displayString, ref _displayString2);
-                        break;
-                    }
-                case LevelingParameters.T:
-                    {
-                        var l = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.L).Value.Value;
-                        var v = _cells.First(x => (LevelingParameters)x.TextBlock == LevelingParameters.V).Value.Value;
-
-                        Func<double, double> func = m => m * Math.Sqrt(32 * l) / v;
-
-                        FormatDisplayString(LevelingParameters.T, func, "T ≥ ", ref _displayString, ref _displayString2);
-                        break;
-                    }
+                MessageBox.Show("Некорректные аргуметы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WpfApplication1.Models
 {
@@ -40,7 +39,7 @@ namespace WpfApplication1.Models
     }
     public enum SeasonalFreezingParameters
     {
-        γ, P, R, f, z
+        γ, P, R, f, r
     }
     public enum IntergralTemperatureParameters
     {

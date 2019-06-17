@@ -42,8 +42,8 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <Button Grid.Row="2" Command="{Binding ButtonClickCommand}" Content="Рассчитать" Width="100" Height="30" Margin="15,0,0,0" HorizontalAlignment="Left" />
-                <TextBlock Grid.Row="3" Text="Z ≥  " Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15,0,0,0">
-                     <Run Text="{Binding Z}"/>
+                <TextBlock Grid.Row="3" Text="z ≥  " Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15,0,0,0">
+                     <Run Text="{Binding Z}"/>     <Run Text="(м)"/>
                 </TextBlock>
             </Grid>
         </Border>
@@ -115,7 +115,6 @@
                                 Background="Black" Canvas.Left="116" Margin="0" Canvas.Top="335" />
                     <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Stretch" Width="16" Height="18" Margin="0" Canvas.Left="312" Canvas.Top="128"><Run Text="f"/></TextBlock>
                     <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Stretch" Width="16" Height="18" Margin="0" Canvas.Left="400" Canvas.Top="223"><Run Text="z"/></TextBlock>
-
                 </Canvas>
             </Grid>
         </Border>

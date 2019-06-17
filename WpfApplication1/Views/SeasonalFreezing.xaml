@@ -12,8 +12,9 @@
             <Grid Style="{StaticResource LeftGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
-                    <RowDefinition Height="210"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="260"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Параметры породы:" Grid.Row="0" Margin="15,15,0,0"> </TextBlock>
                 <ItemsControl ItemsSource="{Binding Cells}" Grid.Row="1">
@@ -41,6 +42,9 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <Button Grid.Row="2" Command="{Binding ButtonClickCommand}" Content="Рассчитать" Width="100" Height="30" Margin="15,0,0,0" HorizontalAlignment="Left" />
+                <TextBlock Grid.Row="3" Text="z ≥  " Visibility="{Binding VisibilityCondition, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15,0,0,0">
+                     <Run Text="{Binding Z}"/>     <Run Text="(м)"/>
+                </TextBlock>
             </Grid>
         </Border>
         <Border Style="{StaticResource RightBorderStyle}">

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using WpfApplication1.Models;
 
 namespace WpfApplication1.VMs
 {
-
-
     class PermafrostVM : BaseViewModel
     {
         private List<DataStructure> _cells;
@@ -25,13 +24,13 @@ namespace WpfApplication1.VMs
                     TextBlock = PermafrostParameters.P,
                     TextBlock2 = "уп",
                     Description = "Коэффициент удельного пучения горной породы",
-                    Units = "(Н/см²)"
+                    Units = "(кПа/см²)"
                 },
                 new DataStructure{
                     TextBlock = PermafrostParameters.Р,
                     TextBlock2 = "усм",
                     Description = "Коэффициент удельного смерзания горной породы",
-                    Units = "(Н/см²)"
+                    Units = "(кПа/см²)"
                 }
             };
             VisibilityCondition = false;
@@ -83,13 +82,20 @@ namespace WpfApplication1.VMs
 
         public void Calculate()
         {
-            var f = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.f).Value.Value;
-            var P_уп = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.P).Value.Value;
-            var P_усм = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.Р).Value.Value;
+            try
+            {
+                var f = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.f).Value.Value;
+                var P_уп = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.P).Value.Value;
+                var P_усм = _cells.First(x => (PermafrostParameters)x.TextBlock == PermafrostParameters.Р).Value.Value;
 
-            Z = 1.4 * f * P_уп / P_усм;
+                Z = 1.4 * f * P_уп / P_усм;
 
-            VisibilityCondition = true;
+                VisibilityCondition = true;
+            }
+            catch
+            {
+                MessageBox.Show("Некорректные аргуметы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+            }
         }
     }
 }

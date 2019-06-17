@@ -5,6 +5,7 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using WpfApplication1.Models;
 
@@ -26,13 +27,13 @@ namespace WpfApplication1.VMs
             _cells = new List<DataStructure>() {
                 new DataStructure{
                     TextBlock = IntergralTemperatureParameters.α,
-                    TextBlock2 = "-6",
+                    TextBlock2 = "* 10^-6",
                     Description = "Коэффициент теплового линейного расширения горной породы",
                     Units = "(1/℃)",
                 },
                 new DataStructure{
                     TextBlock =IntergralTemperatureParameters.a,
-                    TextBlock2 = "-7",
+                    TextBlock2 = " * 10^-7",
                     Description = "Температуропроводность горной породы",
                     Units = "(м²/c)"
                 },
@@ -172,8 +173,8 @@ namespace WpfApplication1.VMs
                 else
                 {
                     Cells = Cells.Select(c => { c.Value = value.Values.First(x => x.Name == (IntergralTemperatureParameters)c.TextBlock).Value; return c; }).ToList();
+                    PlotModel = CreateModel();
                 }
-                PlotModel = CreateModel();
                 OnPropertyChanged("SolidParameter");
             }
         }
@@ -236,10 +237,13 @@ namespace WpfApplication1.VMs
                 EndPoint = new DataPoint(10, 10)
             };
             plotModel.Axes.Add(linearAxis);
-            var function = new FunctionSeries(MakeFunction(), 0, 31556926, 500, "");
-            function.Color = OxyColors.Black;
-            plotModel.Series.Add(function);
-
+            var func = MakeFunction();
+            if (func != null)
+            {
+                var function = new FunctionSeries(MakeFunction(), 0, 31556926, 500, "");
+                function.Color = OxyColors.Black;
+                plotModel.Series.Add(function);
+            }
             return plotModel;
         }
 
@@ -258,15 +262,23 @@ namespace WpfApplication1.VMs
 
         private Func<double, double> MakeFunction()
         {
-            var selectedParameter = _cells;
-            double a = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock== IntergralTemperatureParameters.a).Value.Value * Math.Pow(10, -7);
-            double alpha_st = 12 * Math.Pow(10, -6); //const
-            double z = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.z).Value.Value;
-            double delta = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.Δt).Value.Value;
-            double alpha = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.α).Value.Value;
-            double delta_T = 31556926;
-            return t => delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - alpha) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
-            * Math.Sin(2 * Math.PI * t / delta_T - z * Math.Sqrt(Math.PI / (delta_T * a)) - Math.PI / 4) - alpha_st * Math.Sin(2 * Math.PI * t / delta_T - Math.PI / 4));
+            try
+            {
+                var selectedParameter = _cells;
+                double a = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.a).Value.Value * Math.Pow(10, -7);
+                double alpha_st = 12 * Math.Pow(10, -6); //const
+                double z = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.z).Value.Value;
+                double delta = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.Δt).Value.Value;
+                double alpha = selectedParameter.First(x => (IntergralTemperatureParameters)x.TextBlock == IntergralTemperatureParameters.α).Value.Value;
+                double delta_T = 31556926;
+                return t => delta * 100 * Math.Sqrt(a * delta_T / 2 * Math.PI) * ((alpha_st - alpha) * Math.Exp(-z * Math.Sqrt(Math.PI / (delta_T * a)))
+                * Math.Sin(2 * Math.PI * t / delta_T - z * Math.Sqrt(Math.PI / (delta_T * a)) - Math.PI / 4) - alpha_st * Math.Sin(2 * Math.PI * t / delta_T - Math.PI / 4));
+            }
+            catch
+            {
+                MessageBox.Show("Некорректные аргуметы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                return null;
+            }
         }
     }
 }

@@ -64,8 +64,8 @@
         </Border>
         <Border Style="{StaticResource RightBorderStyle}">
             <Grid Style="{StaticResource RightGridStyle}">
-                <TextBlock Text="{Binding DisplayString}" HorizontalAlignment="Left" Margin="50,15,0,0" FontSize="25"/>
-                <TextBlock Text="{Binding DisplayString2}" HorizontalAlignment="Left"  Margin="50,65,0,0" FontSize="25"/>
+                <TextBlock Text="{Binding DisplayString}" HorizontalAlignment="Left" Margin="50,15,0,0" FontSize="17"/>
+                <TextBlock Text="{Binding DisplayString2}" HorizontalAlignment="Left"  Margin="50,65,0,0" FontSize="17"/>
             </Grid>
         </Border>
     </Canvas>
